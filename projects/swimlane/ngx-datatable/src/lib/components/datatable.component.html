@@ -1,4 +1,4 @@
-<div visibilityObserver (visible)="recalculate()">
+<div visibilityObserver (visible)="recalculate()" (resized)="onResized($event)">
   <datatable-header
     *ngIf="headerHeight"
     [sorts]="sorts"

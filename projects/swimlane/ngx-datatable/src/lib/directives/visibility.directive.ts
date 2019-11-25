@@ -2,6 +2,8 @@ import {
   Directive, Output, EventEmitter, ElementRef, HostBinding, NgZone, OnInit, OnDestroy
 } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { ResizeSensor } from 'css-element-queries';
+
 import { VisibilityService } from '../services/visibility.service';
 
 /**
@@ -11,7 +13,8 @@ import { VisibilityService } from '../services/visibility.service';
  *
  * 		<div
  * 			visibilityObserver
- * 			(visible)="onVisible($event)">
+ * 			(visible)="onVisible($event)"
+ *      (resized)="onResized($event)">
  * 		</div>
  *
  */
@@ -22,7 +25,9 @@ export class VisibilityDirective implements OnInit, OnDestroy {
   isVisible: boolean = false;
 
   @Output() visible: EventEmitter<any> = new EventEmitter();
+  @Output() resized: EventEmitter<any> = new EventEmitter();
   visibleSubscription: Subscription;
+  private resizeSensor: ResizeSensor;
   constructor(private element: ElementRef,
               private zone: NgZone,
               private readonly visibilityService: VisibilityService) { }
@@ -37,12 +42,16 @@ export class VisibilityDirective implements OnInit, OnDestroy {
         }
       });
     });
+    this.resizeSensor = new ResizeSensor(this.element.nativeElement, () => this.resized.emit());
   }
 
   ngOnDestroy(): void {
     this.visibilityService.unobserve(this.element.nativeElement);
     if (this.visibleSubscription) {
       this.visibleSubscription.unsubscribe();
+    }
+    if (this.resizeSensor) {
+      this.resizeSensor.detach();
     }
   }
 }

@@ -805,6 +805,9 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     this.recalculateColumns();
   }
 
+  onResized(event) {
+    this.recalculate();
+  }
   /**
    * Window resize handler to update sizes.
    */
