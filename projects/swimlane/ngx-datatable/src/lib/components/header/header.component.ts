@@ -168,6 +168,11 @@ export class DataTableHeaderComponent {
     return column.$$id;
   }
 
+  mergeTrackingFn(index: number, column: any): any {
+    return column.groupId;
+  }
+
+
   onColumnResized(width: number, column: DataTableColumnDirective): void {
     if (width <= column.minWidth) {
       width = column.minWidth;

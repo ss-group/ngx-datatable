@@ -10,8 +10,8 @@
         [class]="'datatable-row-' + colGroup.type"
         [ngStyle]="_styleByGroup[colGroup.type]"
       >
-      <ng-container *ngIf="hasMergeHeader; else noMerge; trackBy: 'groupId'" >
-          <div *ngFor="let merge of colGroup.columns" [ngStyle]="!merge.title && {'padding-top.rem': 1}">
+      <ng-container *ngIf="hasMergeHeader; else noMerge" >
+          <div *ngFor="let merge of colGroup.columns;trackBy: columnTrackingFn" [ngStyle]="!merge.title && {'padding-top.rem': 1}">
                <div class="merge-header" [ngClass]="merge.class">{{ merge.title}}</div>
                <hr *ngIf="merge.title">
                <ng-container *ngTemplateOutlet="columnLayout;context: { cols: merge.columns }">
@@ -24,7 +24,7 @@
       </ng-template>
       <ng-template #columnLayout let-cols="cols">
          <datatable-header-cell
-            resizeable *ngFor="let column of cols"
+            resizeable *ngFor="let column of cols;trackBy: columnTrackingFn"
             [resizeEnabled]="column.resizeable"
             (resize)="onColumnResized($event, column)"
             long-press
