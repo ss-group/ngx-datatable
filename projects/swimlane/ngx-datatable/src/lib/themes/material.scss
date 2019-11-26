@@ -195,7 +195,14 @@ $datatable-summary-row-background-hover: #ddd !default;
 	 */
   .datatable-header {
     border-bottom: 1px solid $datatable-header-border-bottom-color;
-
+    .merge-header{
+      font-weight: 600;
+      font-size: .875rem;
+      text-align: center;
+    }
+    hr{
+      margin:0;
+    }
     .datatable-header-cell {
       text-align: left;
       padding: 0.9rem 1.2rem;

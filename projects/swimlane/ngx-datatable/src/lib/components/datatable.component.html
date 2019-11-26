@@ -1,4 +1,4 @@
-<div visibilityObserver (visible)="recalculate()" (resized)="onResized($event)">
+<div visibilityObserver (visible)="recalculate()" (resized)="onResized()">
   <datatable-header
     *ngIf="headerHeight"
     [sorts]="sorts"
@@ -7,6 +7,7 @@
     [innerWidth]="_innerWidth"
     [offsetX]="_offsetX | async"
     [dealsWithGroup]="groupedRows !== undefined"
+    [mergeHeaders] = "mergeHeaders"
     [columns]="_internalColumns"
     [headerHeight]="headerHeight"
     [reorderable]="reorderable"

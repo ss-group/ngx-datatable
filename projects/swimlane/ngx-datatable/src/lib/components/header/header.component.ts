@@ -8,7 +8,7 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 import { MouseEvent } from '../../events';
-import { columnsByPin, columnGroupWidths, columnsByPinArr } from '../../utils/column';
+import { columnsByPin, columnGroupWidths, columnsByPinArr, colsByMergeHeader, columnByPinArrMerge } from '../../utils/column';
 import { SortType } from '../../types/sort.type';
 import { SelectionType } from '../../types/selection.type';
 import { DataTableColumnDirective } from '../columns/column.directive';
@@ -16,53 +16,7 @@ import { translateXY } from '../../utils/translate';
 
 @Component({
   selector: 'datatable-header',
-  template: `
-    <div
-      orderable
-      (reorder)="onColumnReordered($event)"
-      (targetChanged)="onTargetChanged($event)"
-      [style.width.px]="_columnGroupWidths.total"
-      class="datatable-header-inner"
-    >
-      <div
-        *ngFor="let colGroup of _columnsByPin; trackBy: trackByGroups"
-        [class]="'datatable-row-' + colGroup.type"
-        [ngStyle]="_styleByGroup[colGroup.type]"
-      >
-        <datatable-header-cell
-          *ngFor="let column of colGroup.columns; trackBy: columnTrackingFn"
-          resizeable
-          [resizeEnabled]="column.resizeable"
-          (resize)="onColumnResized($event, column)"
-          long-press
-          [pressModel]="column"
-          [pressEnabled]="reorderable && column.draggable"
-          (longPressStart)="onLongPressStart($event)"
-          (longPressEnd)="onLongPressEnd($event)"
-          draggable
-          [dragX]="reorderable && column.draggable && column.dragging"
-          [dragY]="false"
-          [dragModel]="column"
-          [dragEventTarget]="dragEventTarget"
-          [headerHeight]="headerHeight"
-          [isTarget]="column.isTarget"
-          [targetMarkerTemplate]="targetMarkerTemplate"
-          [targetMarkerContext]="column.targetMarkerContext"
-          [column]="column"
-          [sortType]="sortType"
-          [sorts]="sorts"
-          [selectionType]="selectionType"
-          [sortAscendingIcon]="sortAscendingIcon"
-          [sortDescendingIcon]="sortDescendingIcon"
-          [allRowsSelected]="allRowsSelected"
-          (sort)="onSort($event)"
-          (select)="select.emit($event)"
-          (columnContextmenu)="columnContextmenu.emit($event)"
-        >
-        </datatable-header-cell>
-      </div>
-    </div>
-  `,
+  templateUrl:'./header.component.html',
   host: {
     class: 'datatable-header'
   },
@@ -77,6 +31,12 @@ export class DataTableHeaderComponent {
 
   targetMarkerContext: any;
 
+  groupa(columns:Array<any>){
+    return columns.slice(0,columns.length - 1);
+  }
+  groupb(columns:Array<any>){
+    return columns.slice(-1);
+  }
   @Input() set innerWidth(val: number) {
     this._innerWidth = val;
     setTimeout(() => {
@@ -114,11 +74,20 @@ export class DataTableHeaderComponent {
     return this._headerHeight;
   }
 
+  
+  @Input() mergeHeaders:any;
+
+  get hasMergeHeader(){
+    return this.mergeHeaders.length > 0;
+  }
+
   @Input() set columns(val: any[]) {
     this._columns = val;
 
     const colsByPin = columnsByPin(val);
-    this._columnsByPin = columnsByPinArr(val);
+    if(!this.hasMergeHeader)
+      this._columnsByPin = columnsByPinArr(val);
+    else this._columnsByPin = columnByPinArrMerge(this.mergeHeaders,val);
     setTimeout(() => {
       this._columnGroupWidths = columnGroupWidths(colsByPin, val);
       this.setStylesByGroup();
@@ -148,8 +117,10 @@ export class DataTableHeaderComponent {
   _columnGroupWidths: any = {
     total: 100
   };
+  _columnsByMerge:any[];
   _innerWidth: number;
   _offsetX: number;
+  _mergeHeaders:any[];
   _columns: any[];
   _headerHeight: string;
   _styleByGroup: { [prop: string]: {} } = {

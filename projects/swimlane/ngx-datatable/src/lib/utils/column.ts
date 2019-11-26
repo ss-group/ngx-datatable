@@ -76,3 +76,48 @@ export function columnsByPinArr(val: any) {
 
   return colsByPinArr;
 }
+
+export function columnByPinArrMerge(mergeHeader:any,val:any){
+  const colsByPinArr = [];
+  const colsByPin = columnsByPin(val);
+
+  colsByPinArr.push({ type: 'left', columns: colsByPin['left'] });
+  colsByPinArr.push({ type: 'center', columns: colsByMergeHeader(mergeHeader,colsByPin['center']) });
+  colsByPinArr.push({ type: 'right', columns: colsByPin['right'] });
+
+  return colsByPinArr;
+}
+export function colsByMergeHeader(mergeHeaders: any, cols: any[]) {
+  const mergeHeaderTemplate = mergeHeaders.toArray();
+  const colsByMerge:any[] = [];
+  let i: number = 0;
+  let groupId = 0;
+  let title = "";
+  let isPreviousMerged: boolean = false;
+  while (i < cols.length) { 
+      const merged = mergeHeaderTemplate.find(o => o.start - 1 <= i && i < o.start + o.colspan - 1);
+      let check = merged ? true : false;
+
+      if (isPreviousMerged != check || (merged && merged.title != title)) {
+          groupId += 1;
+      }
+      
+      if (merged) {
+          isPreviousMerged = true;
+          title = merged.title;
+      }
+      else {
+          isPreviousMerged = false;
+          title = '';
+      }
+  
+      if (colsByMerge.some(o => o.groupId == groupId)) {
+          colsByMerge.find(o => o.groupId == groupId).columns.push(cols[i]);
+      }
+      else {
+          colsByMerge.push({ groupId : groupId, title: title, columns: [cols[i]] });
+      }
+     i++;
+  }
+  return colsByMerge;
+}

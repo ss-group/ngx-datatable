@@ -32,6 +32,7 @@ import { DatatableFooterDirective } from './components/footer/footer.directive';
 import { DatatableGroupHeaderTemplateDirective } from './components/body/body-group-header-template.directive';
 import { DataTableSummaryRowComponent } from './components/body/summary/summary-row.component';
 import { VisibilityService } from './services/visibility.service';
+import { DatatableMergeHeaderDirective } from './components/header/merge-header.directive';
 
 @NgModule({
   imports: [CommonModule],
@@ -45,6 +46,7 @@ import { VisibilityService } from './services/visibility.service';
     LongPressDirective,
     ScrollerComponent,
     DatatableComponent,
+    DatatableMergeHeaderDirective,
     DataTableColumnDirective,
     DataTableHeaderComponent,
     DataTableHeaderCellComponent,
@@ -78,6 +80,7 @@ import { VisibilityService } from './services/visibility.service';
     DataTableFooterTemplateDirective,
     DatatableFooterDirective,
     DataTablePagerComponent,
+    DatatableMergeHeaderDirective,
     DatatableGroupHeaderTemplateDirective
   ]
 })

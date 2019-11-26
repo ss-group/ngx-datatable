@@ -46,6 +46,7 @@ import { DimensionsHelper } from '../services/dimensions-helper.service';
 import { throttleable } from '../utils/throttle';
 import { forceFillColumnWidths, adjustColumnWidths } from '../utils/math';
 import { sortRows } from '../utils/sort';
+import { DatatableMergeHeaderDirective } from './header/merge-header.directive';
 
 @Component({
   selector: 'ngx-datatable',
@@ -551,6 +552,16 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     return this.selectionType === SelectionType.multiClick;
   }
 
+  
+  /**
+   * Group header templates gathered from `ContentChildren`
+   * if described in your markup.
+   */
+  @ContentChildren(DatatableMergeHeaderDirective)
+  mergeHeaders: QueryList<DatatableMergeHeaderDirective>;
+    
+ 
+
   /**
    * Column templates gathered from `ContentChildren`
    * if described in your markup.
@@ -805,15 +816,10 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     this.recalculateColumns();
   }
 
-  onResized(event) {
-    this.recalculate();
-  }
   /**
-   * Window resize handler to update sizes.
+   * Container resize handler to update sizes.
    */
-  @HostListener('window:resize')
-  @throttleable(5)
-  onWindowResize(): void {
+  onResized() {
     this.recalculate();
   }
 

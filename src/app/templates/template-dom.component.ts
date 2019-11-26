@@ -20,10 +20,11 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         class="material"
         [rows]="rows"
         [columnMode]="ColumnMode.force"
-        [headerHeight]="50"
+        headerHeight="auto"
         [footerHeight]="50"
         rowHeight="auto"
       >
+      <ngx-datatable-merge-header [start]="1" [colspan]="2" title="group1"></ngx-datatable-merge-header>
         <ngx-datatable-column name="Name">
           <ng-template let-column="column" ngx-datatable-header-template> Holla! {{ column.name }} </ng-template>
           <ng-template let-value="value" ngx-datatable-cell-template>
