@@ -74,11 +74,13 @@ export class DataTableHeaderComponent {
     return this._headerHeight;
   }
 
-  
-  @Input() mergeHeaders:any;
+ 
+  @Input() set mergeHeaders(val:any[]){
+    this._mergeHeaders = val;
+  }
 
   get hasMergeHeader(){
-    return this.mergeHeaders.length > 0;
+    return  this._mergeHeaders && this._mergeHeaders.length > 0;
   }
 
   @Input() set columns(val: any[]) {
@@ -87,7 +89,7 @@ export class DataTableHeaderComponent {
     const colsByPin = columnsByPin(val);
     if(!this.hasMergeHeader)
       this._columnsByPin = columnsByPinArr(val);
-    else this._columnsByPin = columnByPinArrMerge(this.mergeHeaders,val);
+    else this._columnsByPin = columnByPinArrMerge(this._mergeHeaders,val);
     setTimeout(() => {
       this._columnGroupWidths = columnGroupWidths(colsByPin, val);
       this.setStylesByGroup();

@@ -1,3 +1,5 @@
+import { MergeColumn } from '../types/merge-column.type';
+
 /**
  * Returns the columns by pin.
  */
@@ -87,8 +89,8 @@ export function columnByPinArrMerge(mergeHeader:any,val:any){
 
   return colsByPinArr;
 }
-export function colsByMergeHeader(mergeHeaders: any, cols: any[]) {
-  const mergeHeaderTemplate = mergeHeaders.toArray();
+export function colsByMergeHeader(mergeHeaders: MergeColumn[], cols: any[]) {
+  const mergeHeaderTemplate = mergeHeaders;
   const colsByMerge:any[] = [];
   let i: number = 0;
   let groupId = 0;

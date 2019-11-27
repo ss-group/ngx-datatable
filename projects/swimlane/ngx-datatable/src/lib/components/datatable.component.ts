@@ -47,6 +47,7 @@ import { throttleable } from '../utils/throttle';
 import { forceFillColumnWidths, adjustColumnWidths } from '../utils/math';
 import { sortRows } from '../utils/sort';
 import { DatatableMergeHeaderDirective } from './header/merge-header.directive';
+import { MergeColumn } from '../types/merge-column.type';
 
 @Component({
   selector: 'ngx-datatable',
@@ -557,8 +558,11 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    * Group header templates gathered from `ContentChildren`
    * if described in your markup.
    */
-  @ContentChildren(DatatableMergeHeaderDirective)
-  mergeHeaders: QueryList<DatatableMergeHeaderDirective>;
+  @ContentChildren(DatatableMergeHeaderDirective,{ descendants:true})
+  set mergeHeaders(val : QueryList<DatatableMergeHeaderDirective>){
+     this.translateMergeColumns(val);
+  }
+
     
  
 
@@ -644,6 +648,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   _internalRows: any[];
   _internalColumns: TableColumn[];
   _columns: TableColumn[];
+  _mergeHeader:MergeColumn[];
   _columnTemplates: QueryList<DataTableColumnDirective>;
   _subscriptions: Subscription[] = [];
 
@@ -732,6 +737,18 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     }
   };
 
+  /**
+   * Translates the merge header to the column objects
+   */
+  translateMergeColumns(val: any) {
+    if (val) {
+      const arr = val.toArray();
+      if (arr.length) {
+        this._mergeHeader = arr.map(merge=> (merge as MergeColumn));
+        this.cd.markForCheck();
+      }
+    }
+  }
   /**
    * Translates the templates to the column objects
    */
