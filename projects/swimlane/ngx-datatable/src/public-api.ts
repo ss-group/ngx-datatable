@@ -7,6 +7,7 @@ export * from './lib/ngx-datatable.module';
 export * from './lib/components/datatable.component';
 export * from './lib/components/header/header.component';
 export * from './lib/components/header/header-cell.component';
+export * from './lib/components/header/merge-header.directive';
 export * from './lib/components/body/body.component';
 export * from './lib/components/body/body-cell.component';
 export * from './lib/components/body/body-row.component';
