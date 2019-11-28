@@ -12,10 +12,10 @@ bootstrap table theme
       flex-direction: column;
       .merge-title{
         font-weight: 600;
-        font-size: .8rem;
         text-align: center;
         hr{
-          margin:0;
+          margin-bottom: 0;
+          margin-top:.5rem;
         }
       }
       .merge-body{
