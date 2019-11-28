@@ -117,7 +117,7 @@ export function colsByMergeHeader(mergeHeaders: MergeColumn[], cols: any[]) {
           colsByMerge.find(o => o.groupId == groupId).columns.push(cols[i]);
       }
       else {
-          colsByMerge.push({ groupId : groupId, title: title, columns: [cols[i]] });
+          colsByMerge.push({ groupId : groupId, title: title, columns: [cols[i]],isMerge: (merged ? true:false) } as MergeColumn);
       }
      i++;
   }

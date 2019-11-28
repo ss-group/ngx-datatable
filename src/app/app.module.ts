@@ -73,6 +73,7 @@ import { SummaryRowServerPagingComponent } from './summary/summary-row-server-pa
 import { SummaryRowInlineHtmlComponent } from './summary/summary-row-inline-html.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
+import { ParentComponent } from './templates/parent.component';
 
 @NgModule({
   declarations: [
@@ -126,7 +127,8 @@ import { CommonModule } from '@angular/common';
     SummaryRowSimpleComponent,
     SummaryRowCustomTemplateComponent,
     SummaryRowServerPagingComponent,
-    SummaryRowInlineHtmlComponent
+    SummaryRowInlineHtmlComponent,
+    ParentComponent,
   ],
   imports: [
     CommonModule,

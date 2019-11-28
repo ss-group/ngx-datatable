@@ -18,7 +18,7 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       </h3>
       <app-table [rows]="rows" >
       <ngx-datatable-merge-header [start]="1" [colspan]="2" title="group1"></ngx-datatable-merge-header>
-      <ngx-datatable-merge-header [start]="3" [colspan]="1" title="group2"></ngx-datatable-merge-header>
+      
         <ngx-datatable-column name="Name">
           <ng-template let-column="column" ngx-datatable-header-template> Holla! {{ column.name }} </ng-template>
           <ng-template let-value="value" ngx-datatable-cell-template>

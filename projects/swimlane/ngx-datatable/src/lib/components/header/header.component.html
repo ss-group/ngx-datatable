@@ -11,9 +11,9 @@
         [ngStyle]="_styleByGroup[colGroup.type]"
       >
       <ng-container *ngIf="hasMergeHeader; else noMerge" >
-          <div *ngFor="let merge of colGroup.columns;trackBy: columnTrackingFn" [ngStyle]="!merge.title && {'padding-top.rem': 1}">
+          <div *ngFor="let merge of colGroup.columns;trackBy: columnTrackingFn" [ngStyle]="!merge.isMerge && { 'display':'flex'}">
                <div class="merge-header" [ngClass]="merge.class">{{ merge.title}}</div>
-               <hr *ngIf="merge.title">
+               <hr *ngIf="merge.isMerge">
                <ng-container *ngTemplateOutlet="columnLayout;context: { cols: merge.columns }">
                </ng-container>
           </div>
@@ -22,7 +22,7 @@
           <ng-container *ngTemplateOutlet="columnLayout;context: { cols: colGroup.columns }">
           </ng-container>
       </ng-template>
-      <ng-template #columnLayout let-cols="cols">
+      <ng-template #columnLayout let-cols="cols" let-isMerge="isMerge">
          <datatable-header-cell
             resizeable *ngFor="let column of cols;trackBy: columnTrackingFn"
             [resizeEnabled]="column.resizeable"
@@ -37,7 +37,7 @@
             [dragY]="false"
             [dragModel]="column"
             [dragEventTarget]="dragEventTarget"
-            [headerHeight]="headerHeight"
+            [headerHeight]="isMerge ? headerHeight : 'auto'"
             [isTarget]="column.isTarget"
             [targetMarkerTemplate]="targetMarkerTemplate"
             [targetMarkerContext]="column.targetMarkerContext"

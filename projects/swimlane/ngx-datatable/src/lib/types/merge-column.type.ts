@@ -4,4 +4,6 @@ export interface MergeColumn{
     colspan:number;
     title?:string;
     class?:string;
+    columns:any[];
+    isMerge:boolean;
 }
