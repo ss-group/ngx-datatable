@@ -7,13 +7,22 @@ bootstrap table theme
   font-size: 13px;
   .datatable-header {
     height: unset !important;
-    .merge-header{
-      font-weight: 600;
-      font-size: .875rem;
-      text-align: center;
-    }
-    hr{
-      margin:0;
+    .datatable-merge-header{
+      display: flex;
+      flex-direction: column;
+      .merge-title{
+        font-weight: 600;
+        font-size: .8rem;
+        text-align: center;
+        hr{
+          margin:0;
+        }
+      }
+      .merge-body{
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+      }
     }
     .datatable-header-cell {
       vertical-align: bottom;

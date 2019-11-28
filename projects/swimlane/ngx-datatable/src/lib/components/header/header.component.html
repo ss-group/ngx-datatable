@@ -1,58 +1,34 @@
-<div
-      orderable
-      (reorder)="onColumnReordered($event)"
-      (targetChanged)="onTargetChanged($event)"
-      [style.width.px]="_columnGroupWidths.total"
-      class="datatable-header-inner"
-    >
-      <div
-        *ngFor="let colGroup of _columnsByPin; trackBy: trackByGroups"
-        [class]="'datatable-row-' + colGroup.type"
-        [ngStyle]="_styleByGroup[colGroup.type]"
-      >
-      <ng-container *ngIf="hasMergeHeader; else noMerge" >
-          <div *ngFor="let merge of colGroup.columns;trackBy: columnTrackingFn" [ngStyle]="!merge.isMerge && { 'display':'flex'}">
-               <div class="merge-header" [ngClass]="merge.class">{{ merge.title}}</div>
-               <hr *ngIf="merge.isMerge">
-               <ng-container *ngTemplateOutlet="columnLayout;context: { cols: merge.columns }">
-               </ng-container>
-          </div>
-      </ng-container>
-      <ng-template #noMerge >
-          <ng-container *ngTemplateOutlet="columnLayout;context: { cols: colGroup.columns }">
+<div orderable (reorder)="onColumnReordered($event)" (targetChanged)="onTargetChanged($event)"
+  [style.width.px]="_columnGroupWidths.total" class="datatable-header-inner">
+  <div *ngFor="let colGroup of _columnsByPin; trackBy: trackByGroups" [class]="'datatable-row-' + colGroup.type"
+    [ngStyle]="_styleByGroup[colGroup.type]">
+    <ng-container *ngIf="hasMergeHeader; else noMerge">
+      <div class="datatable-merge-header" *ngFor="let merge of colGroup.columns;trackBy: columnTrackingFn" >
+        <div *ngIf="merge.isMerge" class="merge-title" [ngClass]="merge.class">{{ merge.title}}
+          <hr>
+        </div>
+        <div class="merge-body">
+          <ng-container *ngTemplateOutlet="columnLayout;context: { cols: merge.columns }">
           </ng-container>
-      </ng-template>
-      <ng-template #columnLayout let-cols="cols" let-isMerge="isMerge">
-         <datatable-header-cell
-            resizeable *ngFor="let column of cols;trackBy: columnTrackingFn"
-            [resizeEnabled]="column.resizeable"
-            (resize)="onColumnResized($event, column)"
-            long-press
-            [pressModel]="column"
-            [pressEnabled]="reorderable && column.draggable"
-            (longPressStart)="onLongPressStart($event)"
-            (longPressEnd)="onLongPressEnd($event)"
-            draggable
-            [dragX]="reorderable && column.draggable && column.dragging"
-            [dragY]="false"
-            [dragModel]="column"
-            [dragEventTarget]="dragEventTarget"
-            [headerHeight]="isMerge ? headerHeight : 'auto'"
-            [isTarget]="column.isTarget"
-            [targetMarkerTemplate]="targetMarkerTemplate"
-            [targetMarkerContext]="column.targetMarkerContext"
-            [column]="column"
-            [sortType]="sortType"
-            [sorts]="sorts"
-            [selectionType]="selectionType"
-            [sortAscendingIcon]="sortAscendingIcon"
-            [sortDescendingIcon]="sortDescendingIcon"
-            [allRowsSelected]="allRowsSelected"
-            (sort)="onSort($event)"
-            (select)="select.emit($event)"
-            (columnContextmenu)="columnContextmenu.emit($event)"
-          >
-        </datatable-header-cell>
-      </ng-template>
-    </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #noMerge>
+      <ng-container *ngTemplateOutlet="columnLayout;context: { cols: colGroup.columns }">
+      </ng-container>
+    </ng-template>
+    <ng-template #columnLayout let-cols="cols">
+      <datatable-header-cell resizeable *ngFor="let column of cols;trackBy: columnTrackingFn"
+        [resizeEnabled]="column.resizeable" (resize)="onColumnResized($event, column)" long-press [pressModel]="column"
+        [pressEnabled]="reorderable && column.draggable" (longPressStart)="onLongPressStart($event)"
+        (longPressEnd)="onLongPressEnd($event)" draggable [dragX]="reorderable && column.draggable && column.dragging"
+        [dragY]="false" [dragModel]="column" [dragEventTarget]="dragEventTarget" [headerHeight]="headerHeight"
+        [isTarget]="column.isTarget" [targetMarkerTemplate]="targetMarkerTemplate"
+        [targetMarkerContext]="column.targetMarkerContext" [column]="column" [sortType]="sortType" [sorts]="sorts"
+        [selectionType]="selectionType" [sortAscendingIcon]="sortAscendingIcon"
+        [sortDescendingIcon]="sortDescendingIcon" [allRowsSelected]="allRowsSelected" (sort)="onSort($event)"
+        (select)="select.emit($event)" (columnContextmenu)="columnContextmenu.emit($event)">
+      </datatable-header-cell>
+    </ng-template>
+  </div>
 </div>

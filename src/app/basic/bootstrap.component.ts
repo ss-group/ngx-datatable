@@ -30,6 +30,7 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         rowHeight="auto"
         [reorderable]="reorderable"
       >
+      <ngx-datatable-merge-header [start]="1" [colspan]="2" title="boot"> </ngx-datatable-merge-header>
       </ngx-datatable>
     </div>
   `
