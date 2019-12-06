@@ -55,6 +55,7 @@ export class DataTableHeaderComponent {
   @Input() sorts: any[];
   @Input() sortType: SortType;
   @Input() allRowsSelected: boolean;
+  @Input() allPageRowsSelected: any;
   @Input() selectionType: SelectionType;
   @Input() reorderable: boolean;
 

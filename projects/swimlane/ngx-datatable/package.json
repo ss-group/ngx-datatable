@@ -1,7 +1,10 @@
 {
   "name": "ss-group-datatable",
-  "version": "1.0.5",
+  "version": "1.0.10",
   "description": "ngx-datatable is an Angular table grid component for presenting large and complex data.",
+  "dependencies": {
+    "css-element-queries" : "^1.2.2"
+  },
   "peerDependencies": {
     "@angular/common": "<9.0.0",
     "@angular/core": "<9.0.0",

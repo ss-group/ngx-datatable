@@ -3,7 +3,7 @@ import { MockServerResultsService } from './mock-server-results-service';
 import { PagedData } from './model/paged-data';
 import { CorporateEmployee } from './model/corporate-employee';
 import { Page } from './model/page';
-import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
+import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
   selector: 'server-paging-demo',
@@ -24,7 +24,6 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       <ngx-datatable
         class="material"
         [rows]="rows"
-        [columns]="[{ name: 'Name' }, { name: 'Gender' }, { name: 'Company' }]"
         [columnMode]="ColumnMode.force"
         [headerHeight]="50"
         [footerHeight]="50"
@@ -33,8 +32,39 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         [count]="page.totalElements"
         [offset]="page.pageNumber"
         [limit]="page.size"
+        [rowIdentity]="identity"
+        [selected]="selected"
+        [selectionType]="SelectionType.checkbox"
+        (select)="onSelect($event)"
         (page)="setPage($event)"
       >
+      <ngx-datatable-column
+      [width]="30"
+      [sortable]="false"
+      [canAutoResize]="false"
+      [draggable]="false"
+      [resizeable]="false"
+    >
+    <ng-template
+    ngx-datatable-header-template
+    let-value="value"
+    let-allPageRowsSelected="allPageRowsSelected"
+    let-selectFn="selectFn"
+  >
+    <input type="checkbox" [checked]="allPageRowsSelected" (change)="selectFn(!allRowsSelected)" />
+  </ng-template>
+      <ng-template
+        ngx-datatable-cell-template
+        let-value="value"
+        let-isSelected="isSelected"
+        let-onCheckboxChangeFn="onCheckboxChangeFn"
+      >
+        <input type="checkbox" [checked]="isSelected" (change)="onCheckboxChangeFn($event)" />
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Name"></ngx-datatable-column>
+    <ngx-datatable-column name="Gender"></ngx-datatable-column>
+    <ngx-datatable-column name="Company"></ngx-datatable-column>
       </ngx-datatable>
     </div>
   `
@@ -42,18 +72,20 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 export class ServerPagingComponent {
   page = new Page();
   rows = new Array<CorporateEmployee>();
-
+  selected = [];
   ColumnMode = ColumnMode;
-
+  SelectionType = SelectionType;
   constructor(private serverResultsService: MockServerResultsService) {
     this.page.pageNumber = 0;
     this.page.size = 20;
   }
-
+  onSelect({ selected }) {
+    this.selected.splice(0, this.selected.length);
+    this.selected.push(...selected);
+  }
   ngOnInit() {
     this.setPage({ offset: 0 });
   }
-
   /**
    * Populate the table with new data based on the page number
    * @param page The page to select
@@ -64,5 +96,8 @@ export class ServerPagingComponent {
       this.page = pagedData.page;
       this.rows = pagedData.data;
     });
+  }
+  identity(row){
+    return row.name
   }
 }

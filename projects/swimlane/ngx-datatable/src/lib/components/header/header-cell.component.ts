@@ -55,13 +55,21 @@ export class DataTableHeaderCellComponent {
   @Input() targetMarkerContext: any;
 
   _allRowsSelected: boolean;
-
+  _allPageRowsSelected: any;
   @Input() set allRowsSelected(value) {
     this._allRowsSelected = value;
     this.cellContext.allRowsSelected = value;
   }
   get allRowsSelected() {
     return this._allRowsSelected;
+  }
+
+  @Input() set allPageRowsSelected(value) {
+    this._allPageRowsSelected = value;
+    this.cellContext.allPageRowsSelected = value;
+  }
+  get allPageRowsSelected() {
+    return  this._allPageRowsSelected;
   }
 
   @Input() selectionType: SelectionType;
@@ -164,6 +172,7 @@ export class DataTableHeaderCellComponent {
     sortDir: this.sortDir,
     sortFn: this.sortFn,
     allRowsSelected: this.allRowsSelected,
+    allPageRowsSelected:this.allPageRowsSelected,
     selectFn: this.selectFn
   };
 

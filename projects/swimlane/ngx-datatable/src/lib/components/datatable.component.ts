@@ -553,18 +553,18 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     return this.selectionType === SelectionType.multiClick;
   }
 
-  
+
   /**
    * Group header templates gathered from `ContentChildren`
    * if described in your markup.
    */
-  @ContentChildren(DatatableMergeHeaderDirective,{ descendants:true})
-  set mergeHeaders(val : QueryList<DatatableMergeHeaderDirective>){
-     this.translateMergeColumns(val);
+  @ContentChildren(DatatableMergeHeaderDirective, { descendants: true })
+  set mergeHeaders(val: QueryList<DatatableMergeHeaderDirective>) {
+    this.translateMergeColumns(val);
   }
 
-    
- 
+
+
 
   /**
    * Column templates gathered from `ContentChildren`
@@ -631,6 +631,18 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
 
     return this.selected && this.rows && this.rows.length !== 0 && allRowsSelected;
   }
+ 
+    /**
+   * Returns if all rows on one page are selected.
+   */
+  get allPageRowsSelected(): boolean{
+    if((this.rows as Array<any>).some(row=>!this.selected.find(select=>this.rowIdentity(select) === this.rowIdentity(row)))){
+      this._allPageRowsSelected[this.offset] = false;
+    }
+    else this._allPageRowsSelected[this.offset] = true;
+    return this._allPageRowsSelected[this.offset];
+  }
+  _allPageRowsSelected:any={};
 
   element: HTMLElement;
   _innerWidth: number;
@@ -648,7 +660,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   _internalRows: any[];
   _internalColumns: TableColumn[];
   _columns: TableColumn[];
-  _mergeHeader:MergeColumn[];
+  _mergeHeader: MergeColumn[];
   _columnTemplates: QueryList<DataTableColumnDirective>;
   _subscriptions: Subscription[] = [];
 
@@ -744,7 +756,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     if (val) {
       const arr = val.toArray();
       if (arr.length) {
-        this._mergeHeader = arr.map(merge=> (merge as MergeColumn));
+        this._mergeHeader = arr.map(merge => (merge as MergeColumn));
         this.cd.markForCheck();
       }
     }
@@ -1125,7 +1137,31 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
       if (!allSelected) {
         this.selected.push(...this._internalRows.slice(first, last));
       }
-    } else {
+    }
+    else if (!this.selectAllRowsOnPage && this.externalPaging) {
+      if (!this._allPageRowsSelected[this.offset]) {
+        // Unselect all so we don't get duplicates.
+  
+        if (this.selected.length > 0) {
+          this.rows.map(row => {
+            this.selected = this.selected.filter((selected) => this.rowIdentity(selected) !== this.rowIdentity(row));
+          });
+        }
+  
+        // Select all again
+        this.selected.push(...this.rows);
+        this.selected = [...this.selected]
+        this._allPageRowsSelected[this.offset] = true;
+  
+      } else {
+        // Unselect all
+        this.rows.map(row => {
+          this.selected = this.selected.filter((selected) => this.rowIdentity(selected) !== this.rowIdentity(row));
+        });
+        this._allPageRowsSelected[this.offset] = false;
+      }
+    }
+    else {
       // before we splice, chk if we currently have all selected
       const allSelected = this.selected.length === this.rows.length;
       // remove all existing either way
