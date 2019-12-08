@@ -64,14 +64,6 @@ export class DataTableHeaderCellComponent {
     return this._allRowsSelected;
   }
 
-  @Input() set allPageRowsSelected(value) {
-    this._allPageRowsSelected = value;
-    this.cellContext.allPageRowsSelected = value;
-  }
-  get allPageRowsSelected() {
-    return  this._allPageRowsSelected;
-  }
-
   @Input() selectionType: SelectionType;
 
   @Input() set column(column: TableColumn) {
@@ -172,7 +164,6 @@ export class DataTableHeaderCellComponent {
     sortDir: this.sortDir,
     sortFn: this.sortFn,
     allRowsSelected: this.allRowsSelected,
-    allPageRowsSelected:this.allPageRowsSelected,
     selectFn: this.selectFn
   };
 

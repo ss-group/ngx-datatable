@@ -628,20 +628,16 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
       const rowsOnPage = indexes.last - indexes.first;
       allRowsSelected = this.selected.length === rowsOnPage;
     }
-
+    else if(!this.selectAllRowsOnPage && this.externalPaging){
+      if((this.rows as Array<any>).some(row=>!this.selected.find(select=>this.rowIdentity(select) === this.rowIdentity(row)))){
+        this._allPageRowsSelected[this.offset] = false;
+      }
+      else this._allPageRowsSelected[this.offset] = true;
+      return this._allPageRowsSelected[this.offset];
+    }
     return this.selected && this.rows && this.rows.length !== 0 && allRowsSelected;
   }
  
-    /**
-   * Returns if all rows on one page are selected.
-   */
-  get allPageRowsSelected(): boolean{
-    if((this.rows as Array<any>).some(row=>!this.selected.find(select=>this.rowIdentity(select) === this.rowIdentity(row)))){
-      this._allPageRowsSelected[this.offset] = false;
-    }
-    else this._allPageRowsSelected[this.offset] = true;
-    return this._allPageRowsSelected[this.offset];
-  }
   _allPageRowsSelected:any={};
 
   element: HTMLElement;

@@ -48,10 +48,10 @@ import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/p
     <ng-template
     ngx-datatable-header-template
     let-value="value"
-    let-allPageRowsSelected="allPageRowsSelected"
+    let-allRowsSelected="allRowsSelected"
     let-selectFn="selectFn"
   >
-    <input type="checkbox" [checked]="allPageRowsSelected" (change)="selectFn(!allRowsSelected)" />
+    <input type="checkbox" [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)" />
   </ng-template>
       <ng-template
         ngx-datatable-cell-template
