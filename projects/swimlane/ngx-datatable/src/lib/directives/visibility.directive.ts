@@ -36,8 +36,8 @@ export class VisibilityDirective implements OnInit, OnDestroy {
     this.visibleSubscription = this.visibilityService.observe(this.element.nativeElement)
     .subscribe((visible: boolean) => {
       this.zone.run(() => {
-        this.isVisible = visible;
-        if (this.isVisible) {
+        if (visible) {
+          this.isVisible = visible;
           this.visible.emit(true);
         }
       });
